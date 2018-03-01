@@ -19,22 +19,34 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.interstitial = [[GADInterstitial alloc]
-                         initWithAdUnitID:@"ca-app-pub-3940256099942544/4411468910"];
-    GADRequest *request = [GADRequest request];
-    request.testDevices = @[kGADSimulatorID];
-    [self.interstitial loadRequest:request];
+//    self.interstitial = [[GADInterstitial alloc]
+//                         initWithAdUnitID:@"ca-app-pub-3940256099942544/4411468910"];
+//    GADRequest *request = [GADRequest request];
+//    request.testDevices = @[kGADSimulatorID];
+//    [self.interstitial loadRequest:request];
     
+    self.interstitial =  [self createAndLoadInterstitial];
 }
+
+- (GADInterstitial *)createAndLoadInterstitial {
+    GADInterstitial *interstitial =
+    [[GADInterstitial alloc] initWithAdUnitID:@"ca-app-pub-3940256099942544/4411468910"];
+    interstitial.delegate = self;
+    [interstitial loadRequest:[GADRequest request]];
+    return interstitial;
+}
+
+- (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
+    self.interstitial = [self createAndLoadInterstitial];
+}
+
 - (IBAction)Showmead:(UIButton *)sender {
-    NSLog(@"Show me ad");
+    
     if (self.interstitial.isReady){
         [self.interstitial presentFromRootViewController:self];
     }
     else{
-        GADRequest *request = [GADRequest request];
-        request.testDevices = @[kGADSimulatorID];
-        [self.interstitial loadRequest:request];
+        NSLog(@"Ad wasn't ready");
     }
 }
 

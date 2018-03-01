@@ -22,8 +22,20 @@
     self.interstitial = [[GADInterstitial alloc]
                          initWithAdUnitID:@"ca-app-pub-3940256099942544/4411468910"];
     GADRequest *request = [GADRequest request];
+    request.testDevices = @[kGADSimulatorID];
     [self.interstitial loadRequest:request];
     
+}
+- (IBAction)Showmead:(UIButton *)sender {
+    NSLog(@"Show me ad");
+    if (self.interstitial.isReady){
+        [self.interstitial presentFromRootViewController:self];
+    }
+    else{
+        GADRequest *request = [GADRequest request];
+        request.testDevices = @[kGADSimulatorID];
+        [self.interstitial loadRequest:request];
+    }
 }
 
 
